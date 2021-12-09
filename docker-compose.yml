@@ -1,0 +1,31 @@
+version: "3"
+services: 
+  app_sgraph:
+    container_name: graphql-server-typeorm
+    restart: always
+    build: .
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    ports: 
+      - "5000:5001"
+    volumes:
+      - .:/app
+    networks:
+      - sgraph-network 
+
+  postgres:
+      image: postgres
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_USER: docker
+        POSTGRES_PASSWORD: docker
+        POSTGRES_DB: server-graphql_dev
+      networks:
+        - sgraph-network
+
+networks:
+  sgraph-network:
+    driver: bridge
